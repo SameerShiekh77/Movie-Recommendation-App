@@ -85,7 +85,6 @@ function getRecommendations() {
 // Filter movies based on genre, rating, and release year
 function filterMovies(movies, genre_value, rating, releaseYear, language) {
     let filteredMovies = movies.filter(movie => {
-
         if (movie.genres.toLocaleString().toLowerCase().includes(genre_value.toLowerCase()) || genre_value === "all") {
             if (movie.vote_average >= rating || rating === "all") {
                 if (movie.release_date >= releaseYear || releaseYear === "all") {
