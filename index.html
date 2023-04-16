@@ -63,7 +63,7 @@
           <div class="col-lg-4">
             <div class="form-group">
               <label for="genre">Genre:</label>
-              <select id="genre">
+              <select class="form-select" aria-label="Default select example" id="genre">
                 <option value="all" selected>All</option>
               </select>
             </div>
@@ -71,31 +71,30 @@
           <div class="col-lg-4">
             <div class="form-group">
               <label for="rating">Rating:</label>
-              <select id="rating">
+              <select class="form-select" aria-label="Default select example" id="rating">
                 <option value="all" selected>All</option>
               </select>
             </div>
           </div>
           <div class="col-lg-4">
             <div class="form-group">
-              <label for="release-year">Release Year:</label>
-              <select id="release-year">
+              <label for="language">Language:</label>
+              <select class="form-select" aria-label="Default select example" id="language">
                 <option value="all" selected>All</option>
-                
               </select>
             </div>
           </div>
 
           <div class="col-lg-12">
             <div class="form-group">
-              <label for="language">Language:</label>
-              <select id="language">
+              <label for="release-year">Release Year:</label>
+              <select class="form-select" aria-label="Default select example" id="release-year">
                 <option value="all" selected>All</option>
+                
               </select>
             </div>
+            
           </div>
-
-          <button id="submit-btn">Recommend Me</button>
         </div>
         
         <div id="table" class="my-5">
@@ -110,7 +109,7 @@
             </thead>
             <tbody id="display-movies">
               <tr>
-               <td colspan="3">No Movie Found</td>
+               <td colspan="3" id="msg">No Movie Found</td>
               </tr>
              
             </tbody>

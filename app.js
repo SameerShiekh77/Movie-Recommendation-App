@@ -2,6 +2,9 @@ const genre = document.getElementById("genre");
 const rating = document.getElementById("rating");
 const releaseYear = document.getElementById("release-year");
 const language = document.getElementById("language");
+let movieList = document.getElementById("display-movies");
+const element = document.getElementById("table");
+
 const genresArr = [];
 let ratingArr = [];
 let yearArray = [];
@@ -63,7 +66,7 @@ fetch('./data.json')
         dynamicOptions(rating, uniqueRatingArray);
         dynamicOptions(releaseYear, uniqueYearArray);
         dynamicOptions(language, uniqueLanguagesArray);
-        
+
         localStorage.setItem('moviesList', JSON.stringify(data));
     })
 
@@ -72,83 +75,98 @@ fetch('./data.json')
 let getMovies = localStorage.getItem('moviesList')
 let movies = JSON.parse(getMovies)
 
-// Get user input from form
-const submitBtn = document.querySelector("#submit-btn");
+function getRecommendations() {
 
-submitBtn.addEventListener("click", event => {
-    event.preventDefault();
-     // Get user input and display recommended movies
-     function getRecommendations() {
-        
-        let filteredMovies = filterMovies(movies, genre.value, rating.value, releaseYear.value,language.value);
-        displayMovies(filteredMovies);
+    let filteredMovies = filterMovies(movies, genre.value, rating.value, releaseYear.value, language.value);
+    displayMovies(filteredMovies);
 
-    }
-    getRecommendations();
-    // Filter movies based on genre, rating, and release year
-    function filterMovies(movies, genre_value, rating, releaseYear,language) {
-        let filteredMovies = movies.filter(movie => {
 
-            if (movie.genres.toLocaleString().toLowerCase().includes(genre_value.toLowerCase()) || genre_value === "all") {
-                if (movie.vote_average >= rating || rating === "all") {
-                    if (movie.release_date >= releaseYear || releaseYear === "all") {
-                        if (movie.original_language === language || language === "all") {
-                            return movie;
-                        }
+}
+// Filter movies based on genre, rating, and release year
+function filterMovies(movies, genre_value, rating, releaseYear, language) {
+    let filteredMovies = movies.filter(movie => {
+
+        if (movie.genres.toLocaleString().toLowerCase().includes(genre_value.toLowerCase()) || genre_value === "all") {
+            if (movie.vote_average >= rating || rating === "all") {
+                if (movie.release_date >= releaseYear || releaseYear === "all") {
+                    if (movie.original_language === language || language === "all") {
+                        return movie;
                     }
+
                 }
+
             }
-        });
-        return filteredMovies;
-    }
 
-    
-    // Display recommended movies
-    async function displayMovies(movies) {
-        let response = await movies
-        let movieList = document.getElementById("display-movies");
-        movieList.innerHTML = "";
-
-        if (response.length === 0) {
-            movieList.innerHTML += "No movies found.";
-            return;
         }
-        response.forEach(movie => {
-            let movieRecords = ` <tr>
-            <th scope="row">${movie.id}</th>
-            <td><div class="card " style="max-width: 540px;">
-                <div class="row g-0">
-                  <div class="col-md-1">
-                    <img src="https://image.tmdb.org/t/p/w45/${movie.poster_path}" class="img-fluid rounded-start" alt="...">
-                  </div>
-                  <div class="col-md-11 d-flex justify-content-center align-items-center flex-wrap">
-                    <div class="card-body ">
-                      <h5 class="card-title">${movie.title}</h5>
-                      <p class="card-text"><span class="badge bg-info text-dark me-3">${movie.certification}</span><small class="text-muted">${movie.genres.toLocaleString()} ${movie.runtime}</small></strong></p>
-                    </div>
-                  </div>
+    });
+    return filteredMovies;
+}
+
+
+// Display recommended movies
+function displayMovies(movies) {
+    let response = movies
+    movieList.innerHTML = "";
+
+    if (response.length === 0) {
+
+        movieList.innerHTML += "No Movie Found.";
+        return;
+    }
+    response.forEach(movie => {
+        let year = new Date(movie.release_date).getFullYear()
+        let movieRecords = ` <tr>
+        <td scope="row" class="align-middle text-center">${movie.id}</td>
+        <td><div class="">
+            <div class="row g-0">
+              <div class="col-md-1">
+                <img src="https://image.tmdb.org/t/p/w45/${movie.poster_path}" class="img-fluid rounded-start" alt="poster-image" style="height: 100px;">
+              </div>
+              <div class="col-md-11 d-flex justify-content-center align-items-center flex-wrap">
+                <div class="card-body ">
+                  <h5 class="card-title">${movie.title}</h5>
+                  <p class="card-text"><span class="badge bg-info text-dark me-3">${movie.certification}</span><small class="text-muted">${movie.genres.toLocaleString()} ${movie.runtime} mints</small></strong></p>
                 </div>
-              </div></td>
-            <td>2021</td>
-          </tr>`
-            movieList.innerHTML += movieRecords;
-            checkHeight();
+              </div>
+            </div>
+          </div></td>
+        <td>${year}</td>
+      </tr>`
 
-        });
-    }
+        movieList.innerHTML += movieRecords;
+        checkHeight();
 
-});
+    });
+}
+// Get user input from form
 
-const element = document.getElementById("table");
+// repeat below code when user change any option
+genre.addEventListener("change", event => {
+    getRecommendations();
 
-function checkHeight(){
-    if (element.offsetHeight > '500px'){
-        element.style.overflowY = "scroll";
+})
+
+rating.addEventListener("change", event => {
+    getRecommendations();
+
+})
+releaseYear.addEventListener("change", event => {
+    getRecommendations();
+
+})
+language.addEventListener("change", event => {
+    getRecommendations();
+
+})
+
+function checkHeight() {
+    if (element.offsetHeight > '500') {
         element.style.height = "500px";
+        element.style.overflowY = "scroll";
     }
-    else{
-        element.style.overflowY = "hidden";
+    else {
         element.style.height = "auto";
-        
+        element.style.overflowY = "hidden";
+
     }
 };
