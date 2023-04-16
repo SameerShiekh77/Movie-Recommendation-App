@@ -41,6 +41,7 @@ function dynamicOptions(element, array) {
     for (let index = 0; index < array.length; index++) {
         element.innerHTML += `<option value="${array[index]}">${array[index]}</option>`;
     }
+    
 }
 
 
@@ -48,6 +49,7 @@ function dynamicOptions(element, array) {
 fetch('./data.json')
     .then(response => response.json())
     .then(data => {
+        localStorage.setItem('moviesList', JSON.stringify(data));
         data.forEach(element => {
             genresArr.push(element.genres);
             ratingArr.push(element.vote_average)
@@ -67,13 +69,16 @@ fetch('./data.json')
         dynamicOptions(releaseYear, uniqueYearArray);
         dynamicOptions(language, uniqueLanguagesArray);
 
-        localStorage.setItem('moviesList', JSON.stringify(data));
     })
-
-
+var getMovies;
+let movies;
+setTimeout(() => {
+    getMovies = localStorage.getItem('moviesList')
+    movies = JSON.parse(getMovies)
+    
+}, 1000);
 // Load movie data from local storage
-let getMovies = localStorage.getItem('moviesList')
-let movies = JSON.parse(getMovies)
+
 
 function getRecommendations() {
 
