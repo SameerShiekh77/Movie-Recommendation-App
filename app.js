@@ -73,6 +73,7 @@ fetch('./data.json')
 
 // Load movie data from local storage
 let getMovies = localStorage.getItem('moviesList')
+console.log(getMovies);
 let movies = JSON.parse(getMovies)
 
 function getRecommendations() {
